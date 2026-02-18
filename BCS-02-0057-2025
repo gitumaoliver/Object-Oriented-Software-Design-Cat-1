@@ -1,0 +1,55 @@
+#include <iostream>
+#include <string>
+using namespace std;
+//Superclass with person details
+class Person {
+protected:  //protected hence can only be accessed in this class and derived ones
+    string student_id;
+    string name;
+public:  //public can be accessed anywhere in the system 
+    Person(string id, string n) : student_id(id), name(n) {}
+void display_details() = 0; 
+    string get_id() { return student_id; } //method to get the student ID
+    string get_name() { return name; } //method to get the student name
+};
+
+class Course {  //class for course details
+public:  // attributes can be accessed anywhere since are public
+    string course_id;
+    string course_name;
+
+    Course(string id, string name) : course_id(id), course_name(name) {}
+};
+
+class Student : public Person {          //Student class derived from person class to calculate grades  
+private:
+    Course course;
+    float marks;
+
+public:
+    Student(string id, string n, Course c, float m) : Person(id, n), course(c), marks(m) {}
+
+    char calculate_grade() {               //method loop to calculate grades for display 
+        if (marks >= 90) return 'A';
+        else if (marks >= 75) return 'B';
+        else if (marks >= 60) return 'C';
+        else if (marks >= 50) return 'D';
+        else return 'F';
+    }
+
+    void display_details() override {   //method to output student details
+        cout << "Student ID: " << get_id() << endl      //output student ID
+             << "Name: " << get_name() << endl         //output student name 
+             << "Course: " << course.course_name << endl    //output course
+             << "Marks: " << marks << endl   //output marks
+             << "Grade: " << calculate_grade() << endl;  //output grade
+    }
+};
+int main() { //this is the main function / actual application
+    Course course1("CS01", "Computer Science");
+    Student student1("BSS001", "Fred Otieno", course1, 90);
+
+    student1.display_details();
+
+    return 0;
+}
